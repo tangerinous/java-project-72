@@ -1,23 +1,20 @@
 package hexlet.code;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import java.util.stream.Collectors;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.controller.RootController;
+import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
-import hexlet.code.controller.RootController;
-import hexlet.code.controller.UrlsController;
+import java.io.IOException;
+import java.sql.SQLException;
 
 @Slf4j
 public final class App {
