@@ -3,58 +3,74 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     application
-    id("jacoco")
     id("checkstyle")
-    id("io.freefair.lombok") version "8.3"
+    id("io.freefair.lombok") version "8.2.2"
     id("com.github.ben-manes.versions") version "0.47.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("java")
+    jacoco
 }
-
-group = "hexlet.code"
-version = "1.0-SNAPSHOT"
 
 application {
     mainClass.set("hexlet.code.App")
 }
+
+group = "hexlet.code"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.jsoup:jsoup:1.16.2")
-    implementation("com.h2database:h2:2.2.222")
+    implementation("com.h2database:h2:2.2.220")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("com.konghq:unirest-java:3.14.5")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("org.apache.commons:commons-text:1.10.0")
-    implementation("gg.jte:jte:3.1.0")
-    implementation("org.slf4j:slf4j-simple:2.0.9")
+    implementation("gg.jte:jte:3.0.3")
+    implementation("org.slf4j:slf4j-simple:2.0.7")
     implementation("io.javalin:javalin:5.6.2")
     implementation("io.javalin:javalin-bundle:5.6.2")
     implementation("io.javalin:javalin-rendering:5.6.2")
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
-    testImplementation("org.assertj:assertj-core:3.24.2")
+    testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation ("com.squareup.okhttp3:mockwebserver:4.10.0")
+    implementation ("org.jsoup:jsoup:1.14.3")
+    implementation ("com.konghq:unirest-java:3.13.0")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+}
+
+tasks {
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+}
+
+checkstyle {
+    toolVersion = "10.3.3"
 }
 
 tasks.test {
     useJUnitPlatform()
+    // https://technology.lastminute.com/junit5-kotlin-and-gradle-dsl/
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
         events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+        // showStackTraces = true
+        // showCauses = true
         showStandardStreams = true
-        finalizedBy(tasks.jacocoTestReport)
-    }
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        xml.required = true
     }
 }
