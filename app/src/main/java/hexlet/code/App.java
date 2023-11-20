@@ -13,8 +13,11 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 @Slf4j
 public final class App {
@@ -34,16 +37,16 @@ public final class App {
         hikariConfig.setJdbcUrl(getDatabaseUrl());
 
         var dataSource = new HikariDataSource(hikariConfig);
-//        var url = App.class.getClassLoader().getResource("schema.sql");
-//        var file = new File(url.getFile());
-//        var sql = Files.lines(file.toPath())
-//                .collect(Collectors.joining("\n"));
-//
-//        log.info(sql);
-//        try (var connection = dataSource.getConnection();
-//             var statement = connection.createStatement()) {
-//            statement.execute(sql);
-//        }
+        var url = App.class.getClassLoader().getResource("schema.sql");
+        var file = new File(url.getFile());
+        var sql = Files.lines(file.toPath())
+                .collect(Collectors.joining("\n"));
+
+        log.info(sql);
+        try (var connection = dataSource.getConnection();
+             var statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
         BaseRepository.dataSource = dataSource;
 
         var app = Javalin.create(config -> {
