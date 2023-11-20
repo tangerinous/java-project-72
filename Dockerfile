@@ -22,6 +22,6 @@ ENV GRADLE_USER_HOME /project/.gradle
 
 COPY app/. .
 
-RUN gradle installDist
+RUN ./gradlew --no-daemon build
 
 CMD build/install/app/bin/app
