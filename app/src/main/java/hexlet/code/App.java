@@ -37,16 +37,16 @@ public final class App {
         hikariConfig.setJdbcUrl(getDatabaseUrl());
 
         var dataSource = new HikariDataSource(hikariConfig);
-        var url = App.class.getClassLoader().getResource("schema.sql");
-        var file = new File(url.getFile());
-        var sql = Files.lines(file.toPath())
-                .collect(Collectors.joining("\n"));
-
-        log.info(sql);
-        try (var connection = dataSource.getConnection();
-             var statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+//        var url = App.class.getClassLoader().getResource("schema.sql");
+//        var file = new File(url.getFile());
+//        var sql = Files.lines(file.toPath())
+//                .collect(Collectors.joining("\n"));
+//
+//        log.info(sql);
+//        try (var connection = dataSource.getConnection();
+//             var statement = connection.createStatement()) {
+//            statement.execute(sql);
+//        }
         BaseRepository.dataSource = dataSource;
 
         var app = Javalin.create(config -> {
